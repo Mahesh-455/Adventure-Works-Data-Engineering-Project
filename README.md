@@ -29,17 +29,11 @@ Data Source > Azure Data Lake Storage > Azure Databricks(PySpark / SparkSQL) > P
 
 **Architecture Layers:**
 
-1. Raw Layer (Bronze)
-Stores raw ingested data.
-2. Processed Layer (Silver)
-Data cleaning
-Data transformation
-3. Curated Layer (Gold)
-Analytics-ready datasets
-Aggregated tables
+1. Raw Layer (Bronze) - Stores raw ingested data.
+2. Processed Layer (Silver) -Data cleaning and Data transformation.
+3. Curated Layer (Gold) - Analytics-ready datasets and Aggregated tables.
 
 ⚙️ **Tech Stack**
-
 
 1. Microsoft Azure
 2. Azure Data Factory
@@ -67,6 +61,7 @@ This section describes the step-by-step implementation of the pipeline.
 Bronze → Raw data
 Silver → Cleaned and transformed data
 Gold → Analytics-ready data
+
 This structure helps implement a scalable data lakehouse architecture.
 
 **Create Data Ingestion Pipeline**
