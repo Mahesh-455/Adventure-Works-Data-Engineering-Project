@@ -1,8 +1,17 @@
 **Azure SparkSQL End-to-End Data Engineering Project**
 
 📌 **Project Overview**
-This project demonstrates an end-to-end data engineering pipeline built using Azure services and Apache Spark. The pipeline ingests raw data, processes it using PySpark/SparkSQL, and stores the transformed data for analytics.
-The goal of this project is to simulate a real-world data engineering workflow, including data ingestion, transformation, and storage in a scalable cloud environment.
+
+This project demonstrates an end-to-end data engineering pipeline built using **Microsoft Azure services and Apache Spark.
+
+The pipeline ingests raw data from an external source, processes it using PySpark and Spark SQL, and stores the transformed data in a data lake using a Medallion Architecture (Bronze → Silver → Gold). The processed data is then queried using serverless SQL and visualized in Microsoft Power BI.
+
+This project simulates a real-world cloud data engineering workflow, including:
+1. Data ingestion
+2. Data transformation
+3. Data storage in a scalable data lake
+4. Querying with serverless SQL
+5. Data visualization
 
 🎥 **Project Reference**
 
@@ -31,11 +40,15 @@ Aggregated tables
 
 ⚙️ **Tech Stack**
 
-1. Azure Databricks
-2. Apache Spark
-3. PySpark
-4. SQL
-5. Azure Data Lake Storage
+
+1. Microsoft Azure
+2. Azure Data Factory
+3. Azure Data Lake Storage Gen2
+4. Azure Databricks
+5. Apache Spark
+6. Spark SQL
+7. Azure Synapse Analytics
+8. Microsoft Power BI
 
 **Implementation Steps**
 
@@ -60,9 +73,9 @@ This structure helps implement a scalable data lakehouse architecture.
 
 1. Create Azure Data Factory.
 2. Open Azure Data Factory Studio and create the following Linked Services:
-   HTTP (for external data source)
-   Azure Data Lake Storage Gen2
-3. Create a Copy Data Pipeline to ingest data into the Bronze container.
+   1. HTTP (for external data source)
+   2. Azure Data Lake Storage Gen2
+4. Create a Copy Data Pipeline to ingest data into the Bronze container.
 
 There are two approaches to copy data from the source:
 1. Static Copy - Hardcode the Relative URL of the data source.
