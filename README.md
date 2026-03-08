@@ -16,6 +16,8 @@ Typical workflow of the pipeline:
 
 Data Source > Azure Data Lake Storage > Azure Databricks(PySpark / SparkSQL) > Processed Data(Silver / Gold Layer) > Analytics / Querying
 
+<img width="561" height="245" alt="image" src="https://github.com/user-attachments/assets/5dbf6dde-5efb-46c4-88f7-5de3dcf6597a" />
+
 **Architecture Layers:**
 
 1. Raw Layer (Bronze)
@@ -34,7 +36,112 @@ Aggregated tables
 3. PySpark
 4. SQL
 5. Azure Data Lake Storage
-6. Python
 
-<img width="561" height="245" alt="image" src="https://github.com/user-attachments/assets/5dbf6dde-5efb-46c4-88f7-5de3dcf6597a" />
+**Implementation Steps**
 
+This section describes the step-by-step implementation of the pipeline.
+
+**Azure Setup**
+1.Login to the Microsoft Azure Portal.
+2. Create a Resource Group to organize all resources used in this project.
+
+**Create Data Lake Storage**
+1. Create a Storage Account and enable Hierarchical Namespace to use it as a Data Lake.
+2. Inside the storage account, create three containers representing the Medallion Architecture:
+
+Bronze → Raw data
+Silver → Cleaned and transformed data
+Gold → Analytics-ready data
+This structure helps implement a scalable data lakehouse architecture.
+
+**Create Data Ingestion Pipeline**
+
+1. Create Azure Data Factory.
+2. Open Azure Data Factory Studio and create the following Linked Services:
+   HTTP (for external data source)
+   Azure Data Lake Storage Gen2
+3. Create a Copy Data Pipeline to ingest data into the Bronze container.
+
+There are two approaches to copy data from the source:
+
+Static Copy
+Hardcode the Relative URL of the data source.
+
+Dynamic Copy
+Use pipeline parameters instead of hardcoding the Relative URL.
+
+<img width="940" height="454" alt="image" src="https://github.com/user-attachments/assets/54330490-1207-4c42-ac59-64e1c1c30049" />
+<img width="940" height="404" alt="image" src="https://github.com/user-attachments/assets/0e6c5a70-468b-4434-a890-6d37ae336419" />
+<img width="940" height="728" alt="image" src="https://github.com/user-attachments/assets/a48b0205-4bf9-4c4d-a4e0-c88eb2dd2601" />
+<img width="940" height="262" alt="image" src="https://github.com/user-attachments/assets/d4030f0e-0c86-48c0-a0b2-29a410b898fe" />
+
+
+4. Add the following activities:
+
+Lookup Activity → Retrieves metadata or dataset information
+ForEach Activity → Iterates through files dynamically
+This enables dynamic ingestion of multiple datasets.
+
+<img width="940" height="328" alt="image" src="https://github.com/user-attachments/assets/e82f6c92-18ff-4c28-af6a-bbbab871367b" />
+
+
+**Data Processing with Databricks**
+
+1. Create Azure Databricks.
+2. Create a Compute Cluster to run Spark workloads.
+3. Register an Azure Active Directory Application to enable secure access to the storage account.
+4. Assign the role:
+Storage Blob Data Contributor - This allows read/write access to Azure Data Lake.
+
+**Data Transformation**
+
+1. Create a PySpark Notebook in Databricks.
+2. Configure connection details to connect Azure Data Lake Storage with Databricks.
+
+Example tasks performed in PySpark:
+
+Read data from Bronze container
+Perform data cleaning
+Apply data transformations
+Write transformed data into the Silver container
+
+**Data Warehouse Layer**
+
+1. Create Azure Synapse Analytics Workspace.
+2. Add the Managed Identity of Synapse to the Storage Account for data access.
+3. Open Synapse Studio and create a Serverless SQL Database.
+4. Create a schema named: gold
+5. Query Data from Data Lake - Use OPENROWSET to query data directly from the Data Lake.
+
+Example:
+
+SELECT *
+FROM OPENROWSET(
+    BULK 'https://<storage-account>.dfs.core.windows.net/silver/',
+    FORMAT = 'PARQUET'
+) AS result
+
+6. Create a View and store it inside the Gold Schema.
+7. Create the following objects in Synapse:
+
+Master Key
+Database Scoped Credential using Managed Identity
+External Data Source
+Bronze container path
+Gold container path
+External Data Format(PARQUET and Compression enabled)
+
+8. Create an External Table in the Gold Schema for analytics queries.
+
+**Data Visualization**
+
+1. Install Microsoft Power BI.
+2. Connect Power BI to Synapse:
+
+Steps:
+
+Select Get Data
+Choose Azure → Azure Synapse Analytics SQL
+Enter the SQL Endpoint from Synapse workspace.
+Load the required tables and columns.
+Create interactive dashboards and reports.
