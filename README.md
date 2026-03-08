@@ -58,9 +58,9 @@ This section describes the step-by-step implementation of the pipeline.
 1. Create a Storage Account and enable Hierarchical Namespace to use it as a Data Lake.
 2. Inside the storage account, create three containers representing the Medallion Architecture:
 
-Bronze → Raw data
-Silver → Cleaned and transformed data
-Gold → Analytics-ready data
+   1. Bronze → Raw data
+   2. Silver → Cleaned and transformed data
+   3. Gold → Analytics-ready data
 
 This structure helps implement a scalable data lakehouse architecture.
 
