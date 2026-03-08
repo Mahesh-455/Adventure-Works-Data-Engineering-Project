@@ -1,4 +1,5 @@
 **Azure SparkSQL End-to-End Data Engineering Project**
+
 📌 **Project Overview**
 This project demonstrates an end-to-end data engineering pipeline built using Azure services and Apache Spark. The pipeline ingests raw data, processes it using PySpark/SparkSQL, and stores the transformed data for analytics.
 The goal of this project is to simulate a real-world data engineering workflow, including data ingestion, transformation, and storage in a scalable cloud environment.
@@ -13,21 +14,7 @@ The tutorial demonstrates how to build a complete Azure SparkSQL pipeline using 
 
 Typical workflow of the pipeline:
 
-Data Source
-     │
-     ▼
-Azure Data Lake Storage
-     │
-     ▼
-Azure Databricks
-(PySpark / SparkSQL)
-     │
-     ▼
-Processed Data
-(Silver / Gold Layer)
-     │
-     ▼
-Analytics / Querying
+Data Source > Azure Data Lake Storage > Azure Databricks(PySpark / SparkSQL) > Processed Data(Silver / Gold Layer) > Analytics / Querying
 
 **Architecture Layers:**
 
