@@ -42,10 +42,12 @@ Aggregated tables
 This section describes the step-by-step implementation of the pipeline.
 
 **Azure Setup**
+
 1.Login to the Microsoft Azure Portal.
 2. Create a Resource Group to organize all resources used in this project.
 
 **Create Data Lake Storage**
+
 1. Create a Storage Account and enable Hierarchical Namespace to use it as a Data Lake.
 2. Inside the storage account, create three containers representing the Medallion Architecture:
 
@@ -63,12 +65,8 @@ This structure helps implement a scalable data lakehouse architecture.
 3. Create a Copy Data Pipeline to ingest data into the Bronze container.
 
 There are two approaches to copy data from the source:
-
-Static Copy
-Hardcode the Relative URL of the data source.
-
-Dynamic Copy
-Use pipeline parameters instead of hardcoding the Relative URL.
+1. Static Copy - Hardcode the Relative URL of the data source.
+2. Dynamic Copy - Use pipeline parameters instead of hardcoding the Relative URL.
 
 <img width="940" height="454" alt="image" src="https://github.com/user-attachments/assets/54330490-1207-4c42-ac59-64e1c1c30049" />
 <img width="940" height="404" alt="image" src="https://github.com/user-attachments/assets/0e6c5a70-468b-4434-a890-6d37ae336419" />
@@ -77,10 +75,9 @@ Use pipeline parameters instead of hardcoding the Relative URL.
 
 
 4. Add the following activities:
-
-Lookup Activity → Retrieves metadata or dataset information
-ForEach Activity → Iterates through files dynamically
-This enables dynamic ingestion of multiple datasets.
+   1. Lookup Activity → Retrieves metadata or dataset information
+   2. ForEach Activity → Iterates through files dynamically
+   3. This enables dynamic ingestion of multiple datasets.
 
 <img width="940" height="328" alt="image" src="https://github.com/user-attachments/assets/e82f6c92-18ff-4c28-af6a-bbbab871367b" />
 
@@ -90,8 +87,7 @@ This enables dynamic ingestion of multiple datasets.
 1. Create Azure Databricks.
 2. Create a Compute Cluster to run Spark workloads.
 3. Register an Azure Active Directory Application to enable secure access to the storage account.
-4. Assign the role:
-Storage Blob Data Contributor - This allows read/write access to Azure Data Lake.
+4. Assign the role: Storage Blob Data Contributor - This allows read/write access to Azure Data Lake.
 
 **Data Transformation**
 
@@ -99,11 +95,10 @@ Storage Blob Data Contributor - This allows read/write access to Azure Data Lake
 2. Configure connection details to connect Azure Data Lake Storage with Databricks.
 
 Example tasks performed in PySpark:
-
-Read data from Bronze container
-Perform data cleaning
-Apply data transformations
-Write transformed data into the Silver container
+    1. Read data from Bronze container
+    2. Perform data cleaning
+    3. Apply data transformations
+    4. Write transformed data into the Silver container
 
 **Data Warehouse Layer**
 
@@ -123,25 +118,21 @@ FROM OPENROWSET(
 
 6. Create a View and store it inside the Gold Schema.
 7. Create the following objects in Synapse:
+   1. Master Key
+   2. Database Scoped Credential using Managed Identity
+   3. External Data Source
+   4. Bronze container path
+   5. Gold container path
+   6. External Data Format(PARQUET and Compression enabled)
 
-Master Key
-Database Scoped Credential using Managed Identity
-External Data Source
-Bronze container path
-Gold container path
-External Data Format(PARQUET and Compression enabled)
-
-8. Create an External Table in the Gold Schema for analytics queries.
+9. Create an External Table in the Gold Schema for analytics queries.
 
 **Data Visualization**
 
 1. Install Microsoft Power BI.
 2. Connect Power BI to Synapse:
-
-Steps:
-
-Select Get Data
-Choose Azure → Azure Synapse Analytics SQL
-Enter the SQL Endpoint from Synapse workspace.
-Load the required tables and columns.
-Create interactive dashboards and reports.
+   1. Select Get Data
+   2. Choose Azure → Azure Synapse Analytics SQL
+   3. Enter the SQL Endpoint from Synapse workspace.
+   4. Load the required tables and columns.
+   5. Create interactive dashboards and reports.
